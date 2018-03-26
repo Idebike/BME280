@@ -163,20 +163,15 @@ def main():
   (chip_id, chip_version) = readBME280ID()
   print "Chip ID     :", chip_id
   print "Version     :", chip_version
-with open('atmdata.csv', 'a') as atm:
+now = time.strftime('%d-%m-%Y %H:%M:%S')
+with open('atmdata%s.csv' %now, 'a') as atm:
 	filewriter = csv.writer(atm, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
 	filewriter.writerow(['Timestamp', 'Temperature(C)', 'Pressure(hPa)', 'Humidity(%)'])
 
 	while True:
  		temperature,pressure,humidity = readBME280All()
 		now = time.strftime('%d-%m-%Y %H:%M:%S')
-
 		filewriter.writerow([now, temperature,' %.2f' %pressure,' %.2f' %humidity])
-
- 		print "Temperature : ", temperature, "C"
- 		print "Pressure : ", pressure, "hPa"
- 		print "Humidity : ", humidity, "%"
- 		print "Time: ",time.strftime('%d-%m-%Y %H/:%M:%S')
- 		time.sleep(3)
+ 		time.sleep(120)
 if __name__=="__main__":
    main()
