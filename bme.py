@@ -170,7 +170,9 @@ with open('atmdata.csv', 'a') as atm:
 	while True:
  		temperature,pressure,humidity = readBME280All()
 		now = time.strftime('%d-%m-%Y %H:%M:%S')
-		filewriter.writerow([now, temperature, pressure, humidity])
+
+		filewriter.writerow([now, temperature,' %.2f' %pressure,' %.2f' %humidity])
+
  		print "Temperature : ", temperature, "C"
  		print "Pressure : ", pressure, "hPa"
  		print "Humidity : ", humidity, "%"
