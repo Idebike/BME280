@@ -18,6 +18,7 @@
 # http://www.raspberrypi-spy.co.uk/
 #
 #--------------------------------------
+import csv
 import smbus
 import time
 from time import sleep
@@ -162,12 +163,18 @@ def main():
   (chip_id, chip_version) = readBME280ID()
   print "Chip ID     :", chip_id
   print "Version     :", chip_version
- 
-while True:
- temperature,pressure,humidity = readBME280All()
- print "Temperature : ", temperature, "C"
- print "Pressure : ", pressure, "hPa"
- print "Humidity : ", humidity, "%"
- time.sleep(3)
+with open('atmdata.csv', 'a') as atm:
+	filewriter = csv.writer(atm, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+	filewriter.writerow(['Timestamp', 'Temperature(C)', 'Pressure(hPa)', 'Humidity(%)'])
+
+	while True:
+ 		temperature,pressure,humidity = readBME280All()
+		now = time.strftime('%d-%m-%Y %H:%M:%S')
+		filewriter.writerow([now, temperature, pressure, humidity])
+ 		print "Temperature : ", temperature, "C"
+ 		print "Pressure : ", pressure, "hPa"
+ 		print "Humidity : ", humidity, "%"
+ 		print "Time: ",time.strftime('%d-%m-%Y %H/:%M:%S')
+ 		time.sleep(3)
 if __name__=="__main__":
    main()
